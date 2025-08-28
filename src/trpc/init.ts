@@ -33,30 +33,34 @@ export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
 export const baseProcedure = t.procedure;
 
+export const protectedProcedure = t.procedure.use(
+  async function isAuthed(opts) {
+    const { clerkUserId } = opts.ctx;
 
-export const protectedProcedure = t.procedure.use(async function isAuthed(opts){
-  const { clerkUserId } = opts.ctx;
+    if (!clerkUserId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
 
-  if (!clerkUserId) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.clerkId, clerkUserId));
 
-  const [user] = await db.select().from(users).where(eq(users.clerkId, clerkUserId));
+    if (!user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
 
-  if (!user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
+    const { success } = await ratelimit.limit(user.id);
 
-  const { success } = await ratelimit.limit(user.id);
+    if (!success) {
+      throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
+    }
 
-  if(!success) {
-    throw new TRPCError({ code: "TOO_MANY_REQUESTS" });
-  }
-
-  return opts.next({
-    ctx: {
-      ...opts.ctx,
-      dbUser: user,
-    },
-  });
-});
+    return opts.next({
+      ctx: {
+        ...opts.ctx,
+        dbUser: user,
+      },
+    });
+  },
+);
