@@ -51,10 +51,10 @@ export async function POST(req: NextRequest) {
     const clerkData = event.data as UserJSON;
     const eventType = event.type;
 
-    console.log(
-      `Received webhook with ID ${clerkData.id} and event type of ${eventType}`,
-    );
-    console.log("Webhook payload:", event.data);
+    // console.log(
+    //   `✅ Received webhook with ID ${clerkData.id} and event type of ${eventType}`,
+    // );
+    // console.log("✅ Webhook payload:", event.data);
 
     if (eventType === "user.created") {
       await db.insert(users).values({
@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
 
     return new Response("Webhook received", { status: 200 });
   } catch (err) {
-    console.error("Error:- while processing webhook:", err);
+    console.error("Error:- while processing clerk webhook:", err);
     return new Response("Error: while processing  webhook", { status: 400 });
   }
 }
