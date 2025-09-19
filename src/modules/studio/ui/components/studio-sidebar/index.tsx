@@ -14,15 +14,14 @@ import {
 } from "@/components/ui/sidebar";
 import { StudioSidebarHeader } from "./studio-sidebar-header";
 
-
 export const StudioSidebar = () => {
   const pathName = usePathname();
   return (
     <Sidebar className="z-40 pt-16" collapsible="icon">
       <SidebarContent>
-
         <SidebarGroup>
           <SidebarMenu>
+            {/* User Profile Header */}
             <StudioSidebarHeader />
             <SidebarMenuItem>
               <SidebarMenuButton
