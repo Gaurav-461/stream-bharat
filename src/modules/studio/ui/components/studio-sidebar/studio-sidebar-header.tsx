@@ -28,7 +28,7 @@ export const StudioSidebarHeader = () => {
 
   if (state === "collapsed") {
     return (
-      <SidebarMenuItem>
+      <SidebarMenuItem className="-translate-x-1">
         <SidebarMenuButton asChild tooltip="Your Profile">
           <Link href="/user/current">
             <UserAvatar
