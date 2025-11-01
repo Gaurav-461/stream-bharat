@@ -1,0 +1,21 @@
+import { VideoView } from "@/modules/studio/ui/views/video-view";
+import { trpc } from "@/trpc/server";
+
+interface PageProps {
+  params: Promise<{ videoId: string }>;
+}
+
+const Page = async ({ params }: PageProps) => {
+  const { videoId } = await params;
+
+  void trpc.studio.getOne.prefetch({ id: videoId });
+  void trpc.categories.getMany.prefetch();
+
+  return (
+    <div className="">
+      <VideoView videoId={videoId} />
+    </div>
+  );
+};
+
+export default Page;
