@@ -18,14 +18,14 @@ import {
 import Link from "next/link";
 import { VideoThumbnail } from "@/modules/videos/ui/components/video-thumbnail";
 import { snakeCaseToTitle } from "@/lib/utils";
-import { Globe2Icon, LockIcon } from "lucide-react";
+import { GlobeIcon, LockIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const VideoSection = () => {
   return (
     <Suspense fallback={<VideoSectionSkeleton />}>
       <ErrorBoundary
-        fallback={<div>Error: Error occurred in VideoSection</div>}
+        fallback={<div>Error: Error occurred in Video Section</div>}
       >
         <VideoSectionSuspense />
       </ErrorBoundary>
@@ -113,7 +113,7 @@ const VideoSectionSuspense = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {videos.pages
+            {videos.pages 
               .flatMap((page) => page.items)
               .map((video) => (
                 <Link
@@ -147,7 +147,7 @@ const VideoSectionSuspense = () => {
                         {video.visibility === "Private" ? (
                           <LockIcon className="mr-2 size-4" />
                         ) : (
-                          <Globe2Icon className="mr-2 size-4" />
+                          <GlobeIcon className="mr-2 size-4" />
                         )}
                         {video.visibility}
                       </div>
